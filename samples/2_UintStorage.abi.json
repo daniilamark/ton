@@ -1,0 +1,49 @@
+{
+	"ABI version": 2,
+	"version": "2.1",
+	"header": ["time", "expire"],
+	"functions": [
+		{
+			"name": "storeValue",
+			"inputs": [
+				{"name":"v","type":"uint256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "value",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value","type":"uint256"}
+			]
+		},
+		{
+			"name": "clientAddress",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"clientAddress","type":"address"}
+			]
+		}
+	],
+	"data": [
+	],
+	"events": [
+	],
+	"fields": [
+		{"name":"_pubkey","type":"uint256"},
+		{"name":"_timestamp","type":"uint64"},
+		{"name":"_constructorFlag","type":"bool"},
+		{"name":"value","type":"uint256"},
+		{"name":"clientAddress","type":"address"}
+	]
+}
