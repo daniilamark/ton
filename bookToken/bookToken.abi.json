@@ -15,7 +15,8 @@
 			"inputs": [
 				{"name":"_title","type":"string"},
 				{"name":"author","type":"string"},
-				{"name":"numPages","type":"uint256"}
+				{"name":"numPages","type":"uint256"},
+				{"name":"price","type":"uint256"}
 			],
 			"outputs": [
 			]
@@ -30,17 +31,6 @@
 			]
 		},
 		{
-			"name": "getTokenInfo",
-			"inputs": [
-				{"name":"tokenId","type":"uint256"}
-			],
-			"outputs": [
-				{"name":"tokenTitle","type":"string"},
-				{"name":"tokenAuthor","type":"string"},
-				{"name":"tokenNumPages","type":"uint256"}
-			]
-		},
-		{
 			"name": "changeOwner",
 			"inputs": [
 				{"name":"tokenId","type":"uint256"},
@@ -50,10 +40,31 @@
 			]
 		},
 		{
-			"name": "changePower",
+			"name": "getTokenInfo",
+			"inputs": [
+				{"name":"tokenId","type":"uint256"}
+			],
+			"outputs": [
+				{"name":"tokenTitle","type":"string"},
+				{"name":"tokenAuthor","type":"string"},
+				{"name":"tokenNumPages","type":"uint256"},
+				{"name":"tokenPrice","type":"uint256"}
+			]
+		},
+		{
+			"name": "getTokenPrice",
+			"inputs": [
+				{"name":"tokenId","type":"uint256"}
+			],
+			"outputs": [
+				{"name":"tokenPrice","type":"uint256"}
+			]
+		},
+		{
+			"name": "setTokenPrice",
 			"inputs": [
 				{"name":"tokenId","type":"uint256"},
-				{"name":"power","type":"uint256"}
+				{"name":"newTokenPrice","type":"uint256"}
 			],
 			"outputs": [
 			]
@@ -67,7 +78,7 @@
 		{"name":"_pubkey","type":"uint256"},
 		{"name":"_timestamp","type":"uint64"},
 		{"name":"_constructorFlag","type":"bool"},
-		{"components":[{"name":"title","type":"string"},{"name":"author","type":"string"},{"name":"numPages","type":"uint256"}],"name":"tokensArr","type":"tuple[]"},
+		{"components":[{"name":"title","type":"string"},{"name":"author","type":"string"},{"name":"numPages","type":"uint256"},{"name":"price","type":"uint256"}],"name":"tokensArr","type":"tuple[]"},
 		{"name":"tokenToOwner","type":"map(uint256,uint256)"}
 	]
 }
