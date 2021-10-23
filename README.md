@@ -1,4 +1,4 @@
 #Contract examples
-Smart-contracts written by me during training.
+    Smart-contracts written by me during training.
 
 
