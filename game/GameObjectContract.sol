@@ -4,37 +4,49 @@ pragma AbiHeader expire;
 import "IGameObject.sol";
 
 contract GameObjectContract is IGameObject{
-    /** Контракт "Игровой объект" (Реализует "Интерфейс Игровой объект")
-    👉 получить силу защиты
-    👉 принять атаку [адрес того, кто атаковал можно получить из msg] external
-    👉 проверить, убит ли объект (private)
-    👉 обработка гибели [вызов метода самоуничтожения (сл в списке)]
-    👉 отправка всех денег по адресу и уничтожение
-    👉 свойство с начальным количеством жизней (например, 5)
-    */
-
-    uint public health = 10;
+    uint public health = 20;
+    uint public protectionPower  = 5;
+    uint public attackPower = 10;
+    address public ownerAddress;
+    address public attackerAddress;
 
     event killed(bool isAlive);
 
-    function takeTheAttack(address addressAttacked) virtual public override{
-        health -= 1;
+    constructor() public{   
+        ownerAddress = msg.sender;
     }
 
-    function getProtection() virtual public {
-        require(health < 10);
-        health += 1;
+    modifier onlyOwner {
+        require(msg.pubkey() == tvm.pubkey(), 102);
+        tvm.accept();
+        _;
     }
 
-    function isKilled() private{
-        if(health == 0){
+    function getTakePowerProtection(uint valueProtection) external {
+        require(valueProtection < 30);
+        protectionPower += valueProtection;
+    }
+
+    function takeAttack(uint _attackPower, uint _protectionPower) public override onlyOwner {
+        attackerAddress = msg.sender;
+        health -= (_attackPower - _protectionPower);
+        isKilled();
+    }
+
+    function isKilled() private {
+        if(health <= 0){
             emit killed(true);
         }else{
             emit killed(false);
         }
     }
 
-    function selfDestruction(address dest) private {
-        dest.transfer(0, true, 128 + 32);
+    function selfDestruction() private onlyOwner{
+        ownerAddress.transfer(0, true, 128 + 32);
     }
+    
+    function getOwner() public view returns (address) {    
+        return ownerAddress;
+    }
+    
 }

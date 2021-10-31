@@ -5,35 +5,27 @@ import "GameObjectContract.sol";
 import "BaseStationContract.sol";
 
 contract MilitaryUnitContract is GameObjectContract {
-    /** 
-    👉 конструктор принимает "Базовая станция" и вызывает метод "Базовой Станции" "Добавить военный юнит" 
-    а у себя сохраняет адрес "Базовой станции"
-    👉 атаковать (принимает ИИО [его адрес])
-    👉 получить силу атаки
-    👉 получить силу защиты
-    👉 обработка гибели [вызов метода самоуничтожения + убрать военный юнит из базовой станции]
-    👉 смерть из-за базы (проверяет, что вызов от родной базовой станции только будет работать)
-     [вызов метода самоуничтожения]
-    */
     address addressBaseStation;
-    uint healtMilitaryUnit = health;
-
+    
     constructor(BaseStationContract baseStation) public {
-        baseStation.addMilitaryUnit(msg.sender);
         addressBaseStation = msg.sender;
+        baseStation.addMilitaryUnit(addressBaseStation);
+        this.attackerAddress = attackerAddress;
+        this.health = health;
+        this.protectionPower = protectionPower;
+        this.ownerAddress = ownerAddress;
+    }
+    
+    function getTakePowerProtection(uint valueProtection) public override{
+        require(valueProtection < 30);
+        protectionPower += valueProtection;
     }
 
-    function takeTheAttack(address addres) virtual public override{
-        healtMilitaryUnit -= 1;
+    function getTakePowerAttack(uint valueAttack) public override{
+        require(valueAttack < 20);
+        attackPower += valueAttack;
     }
-
-    function getProtection() virtual public override {
-        require(healtMilitaryUnit < 10);
-        healtMilitaryUnit += 1;
-    }
-
-    function Attack(address ad) public {
-        // атаковать по адрессу
-        healtMilitaryUnit -= 1;
+    function selfDestruction() private onlyOwner{
+        ownerAddress.transfer(0, true, 128 + 32);
     }
 }

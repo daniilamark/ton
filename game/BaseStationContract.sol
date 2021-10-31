@@ -5,33 +5,59 @@ import "ArrayHelper.sol";
 import "GameObjectContract.sol";
 
 contract BaseStationContract is GameObjectContract{
-    /** Контракт "Базовая станция" (Родитель "Игровой объект")
-    👉 получить силу защиты
-    👉 добавить военный юнит (добавляет адрес военного юнита в массив или другую структуру данных)
-    👉 убрать военный юнит
-    👉 обработка гибели [вызов метода самоуничтожения + вызов метода смерти для каждого из военных юнитов базы]
-    */
-
     uint healthBaseStation = health;
     using ArrayHelper for address[];
-    address[] public militaryUnits;
+    address[] militaryUnits;
+    address baseAddress;
 
-    function getProtection() public virtual override{
-        require(healthBaseStation < 10);
-        healthBaseStation += 1;
+    event baseDestroyed(bool isAlive);
+
+    constructor(address _baseAddress) public{   
+        baseAddress = msg.sender;
+        this.attackerAddress = attackerAddress;
+        this.health = health;
+        this.protectionPower = protectionPower;
+        BaseStationContract(_baseAddress).addMilitaryUnit(this);
     }
 
-    function addMilitaryUnit(address addr) public {
+    function getTakePowerProtection(uint valueProtection) public override{
+        require(valueProtection < 30);
+        protectionPower += valueProtection;
+    }
+
+    function takeAttack(uint _attackPower, uint _protectionPower) public override onlyOwner {
+        attackerAddress = msg.sender;
+        health -= (_attackPower - _protectionPower);
+        isBaseDestroyed();
+    }
+
+    function addMilitaryUnit(address addr) virtual private {
         militaryUnits.push(addr);
     }
     
-    function deleteMilitaryUnit(address _addr) public {
-        militaryUnits.deleteFromArray(_addr);
+    function deleteMilitaryUnit(address addre) private {
+        militaryUnits.deleteFromArray(addre);
     }
     
-    function destructionBase() private {
-        address addressBase = msg.sender;
-        addressBase.transfer(0, true, 128 + 32);
+    function destructionBase() private onlyOwner{
+        baseAddress.transfer(0, true, 128 + 32);
         militaryUnits.deleteAllFromArray();
     }
+
+    function getCountUnits() public view returns (uint) {
+        return militaryUnits.length;
+    }
+
+    function isBaseDestroyed() public {
+        if(getCountUnits() == 0){
+            emit baseDestroyed(true);
+        }else{
+            emit baseDestroyed(false);
+        }
+    }
+
+    function getMilitaryUnits() public returns (address[] _militaryUnits) {
+      return _militaryUnits;
+    }
+
 }

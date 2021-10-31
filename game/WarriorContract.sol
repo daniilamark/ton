@@ -3,19 +3,15 @@ pragma AbiHeader expire;
 
 import "MilitaryUnitContract.sol";
 
-abstract contract WarriorContract is MilitaryUnitContract{
-    /**
-    Контракт "Воин" (родитель "Военный юнит")
-    👉 получить силу атаки
-    👉 получить силу защиты
-    */
-    uint healthWarrior = GameObjectContract.health;
+contract WarriorContract is MilitaryUnitContract{
 
-    function takeTheAttack(address ad) public override{
-        healthWarrior -= 1;
+    function getTakePowerProtection(uint valueProtection) virtual external override{
+        require(valueProtection < 30);
+        protectionPower += valueProtection;
     }
 
-    function getProtection() public override {
-        healthWarrior += 1;
+    function getTakePowerAttack(uint valueAttack) virtual external override{
+        require(valueAttack < 20);
+        protectionPower += valueAttack;
     }
 }

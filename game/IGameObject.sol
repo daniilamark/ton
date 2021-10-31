@@ -5,5 +5,5 @@ interface IGameObject {
     /** Интерфейс "Интерфейс Игровой объект" (ИИО).
     👉 принять атаку
     */
-    function takeTheAttack(address addressAttacked) external;
+    function takeAttack(uint _attackPower, uint _protectionPower) external;
 }
