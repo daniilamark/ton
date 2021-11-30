@@ -9,7 +9,7 @@ import "interfaces.sol";
 
 contract ShopDebot is AShopDebot{
     
-    function _menu() internal override {
+    function _menu() virtual internal override {
         string sep = '----------------------------------------';
         Menu.select(
             format(

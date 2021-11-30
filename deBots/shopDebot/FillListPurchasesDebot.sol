@@ -10,7 +10,7 @@ import "interfaces.sol";
 contract FillListPurchasesDebot is ShopDebot{
     uint private id_;
 
-    function _menu() internal override {
+    function _menu() virtual internal override {
         string sep = '----------------------------------------';
         Menu.select(
             format(
@@ -39,13 +39,13 @@ contract FillListPurchasesDebot is ShopDebot{
     function paymentPurchase_(string value) public {
         (uint256 id, ) = stoi(value);
         id_ = id;
-        Terminal.input(tvm.functionId(paymentPurchase_), "Enter price purchase:", false);
+        Terminal.input(tvm.functionId(paymentPurchase__), "Enter price purchase:", false);
     }
 
     function paymentPurchase__(string value) public {
         (uint256 price, ) = stoi(value);
         optional(uint256) pubkey = 0;
-        IShopList(m_address).createPurchase{
+        IShopList(m_address).paymentPurchase{
                 abiVer: 2,
                 extMsg: true,
                 sign: true,
@@ -54,6 +54,6 @@ contract FillListPurchasesDebot is ShopDebot{
                 expire: 0,
                 callbackId: tvm.functionId(onSuccess),
                 onErrorId: tvm.functionId(onError)
-            }(uint64(id_), uint64(price));
+            }(uint32(id_), uint64(price));
     }
 }

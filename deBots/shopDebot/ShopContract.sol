@@ -21,9 +21,7 @@ contract shoppingList is HasConstructorWithPubKey, IShopList{
         require(pubkey != 0, 120);
         tvm.accept();
         m_ownerPubkey = pubkey;
-    }
-
-
+    }  
 
     function createPurchase(string name, uint64 _count) external override onlyOwner {
         tvm.accept();

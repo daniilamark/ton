@@ -10,11 +10,11 @@ import "interfaces.sol";
 contract ShoppingDebot is ShopDebot{
     string private name_;
 
-    function _menu() internal override {
+    function _menu() virtual internal override {
         string sep = '----------------------------------------';
         Menu.select(
             format(
-                "You have count purchases paid: {}, count no Paid:{}, total amount paid: {} purchases",
+                "You have count purchases paid: {}, count no Paid: {}, total amount paid: {} purchases",
                     m_summaryPurchases.countPurchasesPaid,
                     m_summaryPurchases.countPurchasesNoPaid,
                     m_summaryPurchases.totalAmountPaid
@@ -38,13 +38,13 @@ contract ShoppingDebot is ShopDebot{
 
     function createPurchases_(string value) public {
         name_ = value;
-        Terminal.input(tvm.functionId(createPurchases_), "Enter count purchase:", false);
+        Terminal.input(tvm.functionId(createPurchases__), "Enter count purchase:", false);
     }
 
     function createPurchases__(string value) public {
         (uint256 count, ) = stoi(value);
         optional(uint256) pubkey = 0;
-        IShopList(m_address).createPurchase{
+        IShopList(m_address).p{
                 abiVer: 2,
                 extMsg: true,
                 sign: true,
